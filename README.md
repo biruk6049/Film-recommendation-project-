@@ -33,7 +33,7 @@
           <input id="search-input" name="query" type="search" placeholder="Enter movie title..." autocomplete="off" />
           <button type="submit" class="btn primary">Search</button>
         </div>
-        <p class="hint">Press Enter or click Search. (API integration goes in script.js later.)</p>
+        <p class="hint">Press Enter or click Search.</p>
       </form>
     </section>
 

@@ -1,77 +1,180 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Movie Discovery — Home</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="#">MovieDiscovery</a>
+:root{
+  --bg:#0b0f14;
+  --panel:#0f1720;
+  --muted:#9aa4b2;
+  --accent:#e50914;
+  --card:#0b1116;
+  --radius:8px;
+  --gap:16px;
+  --container-width:1100px;
+  --max-width:1200px;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
 
-      <nav class="main-nav" aria-label="Main navigation">
-        <ul>
-          <li><a href="#" class="nav-link active">Home</a></li>
-          <li><a href="#" class="nav-link">Popular</a></li>
-          <li><a href="#" class="nav-link">Top Rated</a></li>
-          <li><a href="#" class="nav-link">Now Playing</a></li>
-          <li><a href="#" class="nav-link">Watchlist</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  background:linear-gradient(180deg,var(--bg),#071018 120%);
+  color:#e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.4;
+}
 
-  <main class="container">
-    <section class="search-section" aria-labelledby="search-heading">
-      <h1 id="search-heading" class="visually-hidden">Search Movies</h1>
+.container{
+  width:90%;
+  max-width:var(--container-width);
+  margin:0 auto;
+  padding:24px 0;
+}
 
-      <form id="search-form" class="search-form" role="search" aria-label="Search movies">
-        <label for="search-input" class="search-label">Search movies</label>
-        <div class="search-controls">
-          <input id="search-input" name="query" type="search" placeholder="Enter movie title..." autocomplete="off" />
-          <button type="submit" class="btn primary">Search</button>
-        </div>
-        <p class="hint">Press Enter or click Search.</p>
-      </form>
-    </section>
+.site-header{
+  background:linear-gradient(90deg, rgba(0,0,0,0.6), transparent);
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--gap);
+}
+.brand{
+  font-weight:700;
+  color:var(--accent);
+  text-decoration:none;
+  font-size:1.25rem;
+  letter-spacing:0.4px;
+}
 
-    <section class="recommendation-section" aria-labelledby="recommendation-heading">
-      <h2 id="recommendation-heading">Recommended for you</h2>
-      <div class="recommendation-list" id="recommendation-list">
-        <article class="movie-card placeholder">
-          <div class="poster poster-placeholder" aria-hidden="true"></div>
-          <div class="card-body">
-            <h3 class="movie-title">Recommendation Title</h3>
-            <p class="movie-meta">Genre · Year</p>
-          </div>
-        </article>
+.main-nav ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.main-nav a{
+  color:var(--muted);
+  text-decoration:none;
+  padding:8px 10px;
+  border-radius:6px;
+  font-size:0.95rem;
+}
+.main-nav a.active,
+.main-nav a:hover{
+  color:#fff;
+  background:rgba(255,255,255,0.03);
+}
 
-        <article class="movie-card placeholder">
-          <div class="poster poster-placeholder" aria-hidden="true"></div>
-          <div class="card-body">
-            <h3 class="movie-title">Recommendation Title</h3>
-            <p class="movie-meta">Genre · Year</p>
-          </div>
-        </article>
-      </div>
-    </section>
+.search-section{
+  margin-top:18px;
+  margin-bottom:18px;
+}
+.search-form{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.search-controls{
+  display:flex;
+  gap:8px;
+}
+.search-form input[type="search"]{
+  flex:1;
+  padding:12px 14px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:#fff;
+  font-size:1rem;
+}
+.btn{
+  border:0;
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn.primary{
+  background:var(--accent);
+  color:#fff;
+}
 
-    <section class="results-section" aria-labelledby="results-heading">
-      <h2 id="results-heading">Search results</h2>
-      <div id="results-container" class="results-grid" aria-live="polite">
-        <div class="empty-state">No results yet. Try searching for a movie above.</div>
-      </div>
-    </section>
-  </main>
+.recommendation-section{
+  margin:24px 0;
+}
+.recommendation-list{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.movie-card{
+  width:180px;
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,0.6);
+}
+.poster{
+  height:270px;
+  background-size:cover;
+  background-position:center;
+}
+.poster-placeholder{
+  background:linear-gradient(90deg,#0b1116 0%, #0f1720 100%);
+  display:block;
+}
+.card-body{
+  padding:10px;
+}
+.movie-title{
+  margin:0 0 6px 0;
+  font-size:0.95rem;
+}
+.movie-meta{
+  margin:0;
+  color:var(--muted);
+  font-size:0.85rem;
+}
 
-  <footer class="site-footer">
-    <div class="container">
-      <small>&copy; <span id="year"></span> MovieDiscovery — Built for GDG Beginner Track</small>
-    </div>
-  </footer>
+.results-section{
+  margin:28px 0 60px 0;
+}
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;
+  align-items:start;
+}
+.empty-state{
+  color:var(--muted);
+  padding:28px;
+  background:rgba(255,255,255,0.02);
+  border-radius:8px;
+}
 
-  <script src="script.js" defer></script>
-</body>
-</html>
+.site-footer{
+  border-top:1px solid rgba(255,255,255,0.03);
+  padding:18px 0;
+  margin-top:40px;
+  color:var(--muted);
+  font-size:0.9rem;
+  text-align:center;
+}
+
+.visually-hidden{
+  position:absolute !important;
+  height:1px; width:1px;
+  overflow:hidden; clip:rect(1px,1px,1px,1px);
+  white-space:nowrap; border:0; padding:0; margin:-1px;
+}
+
+@media (max-width:800px){
+  .header-inner{flex-direction:column; align-items:flex-start; gap:12px}
+  .recommendation-list{justify-content:flex-start}
+  .movie-card{width:140px}
+  .poster{height:210px}
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF_8" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Movie recommendation website</title>
+  </head>
+  <body>
+    <h1>Movie recommendation website</h1>
+    <div>
+      <nav class="main-nav" aria-label="Main navigation">
+    <ul>
+      <li><a href="#" class="nav-link active">Home</a></li>
+      <li><a href="#" class="nav-link">Popular</a></li>
+      <li><a href="#" class="nav-link">Top Rated</a></li>
+      <li><a href="#" class="nav-link">Now Playing</a></li>
+      <li><a href="#" class="nav-link">Watchlist</a></li>
+    </ul>
+  </nav>
+</div>
+
+  <form id="search-form" class="search-form" role="search" aria-label="Search movies">
+    <label for="search-input" class="search-label">Search movies</label>
+    <div class="search-controls">
+      <input id="search-input" name="query" type="search" placeholder="Enter movie title..." autocomplete="off" />
+      <button type="submit" class="btn primary">Search</button>
+    </div>
+    <p class="hint">Press Enter or click Search.</p>
+  </form>
+</section>
+
+<section class="recommendation-section" aria-labelledby="recommendation-heading">
+  <h2 id="recommendation-heading">Recommended for you</h2>
+  <div class="recommendation-list" id="recommendation-list">
+    <article class="movie-card placeholder">
+      <div class="poster poster-placeholder" aria-hidden="true"></div>
+      <div class="card-body">
+        <h3 class="movie-title">Recommendation Title</h3>
+        <p class="movie-meta">Genre · Year</p>
+      </div>
+    </article>
+
+    <article class="movie-card placeholder">
+      <div class="poster poster-placeholder" aria-hidden="true"></div>
+      <div class="card-body">
+        <h3 class="movie-title">Recommendation Title</h3>
+        <p class="movie-meta">Genre · Year</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="results-section" aria-labelledby="results-heading">
+  <h2 id="results-heading">Search results</h2>
+  <div id="results-container" class="results-grid" aria-live="polite">
+    <div class="empty-state">No results yet. Try searching for a movie above.</div>
+  </div>
+</section>
+
+<script src="script.js" defer></script>
+  </body>
+</html>

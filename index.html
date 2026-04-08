@@ -1,62 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF_8" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Movie recommendation website</title>
-  </head>
-  <body>
-    <h1>Movie recommendation website</h1>
-    <div>
-      <nav class="main-nav" aria-label="Main navigation">
-    <ul>
-      <li><a href="#" class="nav-link active">Home</a></li>
-      <li><a href="#" class="nav-link">Popular</a></li>
-      <li><a href="#" class="nav-link">Top Rated</a></li>
-      <li><a href="#" class="nav-link">Now Playing</a></li>
-      <li><a href="#" class="nav-link">Watchlist</a></li>
-    </ul>
-  </nav>
-</div>
-
-  <form id="search-form" class="search-form" role="search" aria-label="Search movies">
-    <label for="search-input" class="search-label">Search movies</label>
-    <div class="search-controls">
-      <input id="search-input" name="query" type="search" placeholder="Enter movie title..." autocomplete="off" />
-      <button type="submit" class="btn primary">Search</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filmify - Movie Recommendations</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="#" class="brand">Filmify</a>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#" class="nav-link active" data-section="home">Home</a></li>
+          <li><a href="#" class="nav-link" data-section="popular">Popular</a></li>
+          <li><a href="#" class="nav-link" data-section="top-rated">Top Rated</a></li>
+          <li><a href="#" class="nav-link" data-section="now-playing">Now Playing</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle" class="btn">Toggle Theme</button>
     </div>
-    <p class="hint">Press Enter or click Search.</p>
-  </form>
-</section>
+  </header>
 
-<section class="recommendation-section" aria-labelledby="recommendation-heading">
-  <h2 id="recommendation-heading">Recommended for you</h2>
-  <div class="recommendation-list" id="recommendation-list">
-    <article class="movie-card placeholder">
-      <div class="poster poster-placeholder" aria-hidden="true"></div>
-      <div class="card-body">
-        <h3 class="movie-title">Recommendation Title</h3>
-        <p class="movie-meta">Genre · Year</p>
+  <main class="container">
+    <!-- Search -->
+    <section class="search-section">
+      <form id="search-form" class="search-form">
+        <div class="search-controls">
+          <input id="search-input" type="search" placeholder="Search movies..." autocomplete="off" />
+          <button type="submit" class="btn primary">Search</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Recommendations -->
+    <section class="recommendation-section">
+      <h2>Recommended for you</h2>
+      <div id="recommendation-container" class="recommendation-list">
+        <!-- Recommendation cards injected here -->
       </div>
-    </article>
+    </section>
 
-    <article class="movie-card placeholder">
-      <div class="poster poster-placeholder" aria-hidden="true"></div>
-      <div class="card-body">
-        <h3 class="movie-title">Recommendation Title</h3>
-        <p class="movie-meta">Genre · Year</p>
+    <!-- Search / Popular Results -->
+    <section class="results-section">
+      <h2>Movies</h2>
+      <div id="results-container" class="results-grid">
+        <div class="empty-state">No movies yet. Search or select a category above.</div>
       </div>
-    </article>
-  </div>
-</section>
+    </section>
+  </main>
 
-<section class="results-section" aria-labelledby="results-heading">
-  <h2 id="results-heading">Search results</h2>
-  <div id="results-container" class="results-grid" aria-live="polite">
-    <div class="empty-state">No results yet. Try searching for a movie above.</div>
-  </div>
-</section>
+  <footer class="site-footer">
+    &copy; <span id="year"></span> Filmify. All rights reserved.
+  </footer>
 
-<script src="script.js" defer></script>
-  </body>
+  <script src="api.js"></script>
+  <script src="recommendation.js"></script>
+  <script src="script.js"></script>
+</body>
 </html>

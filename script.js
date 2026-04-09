@@ -1,69 +1,164 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("year").textContent = new Date().getFullYear();
+let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
 
-  const searchForm = document.getElementById("search-form");
-  const searchInput = document.getElementById("search-input");
-  const resultsContainer = document.getElementById("results-container");
-  const navLinks = document.querySelectorAll(".nav-link");
-  const themeToggle = document.getElementById("theme-toggle");
+const moviesEl = document.getElementById("movies");
+const modal = document.getElementById("modal");
+const modalBody = document.getElementById("modalBody");
+const toggle = document.getElementById("themeToggle");
+const icon = document.getElementById("themeIcon");
 
-  function displayMovies(movies, container) {
-    container.innerHTML = "";
-    if (!movies || movies.length === 0) {
-      container.innerHTML = '<div class="empty-state">No movies found.</div>';
-      return;
-    }
-    movies.forEach(movie => {
-      const div = document.createElement("div");
-      div.className = "movie-card";
-      div.innerHTML = `
-        <div class="poster" style="background-image: url('${movie.poster_path ? IMAGE_BASE_URL + movie.poster_path : 'https://via.placeholder.com/180x270?text=No+Image'}')"></div>
-        <div class="card-body">
-          <h3 class="movie-title">${movie.title}</h3>
-          <p class="movie-meta">⭐ ${movie.vote_average} · ${movie.release_date?.split("-")[0] || 'N/A'}</p>
-        </div>
-      `;
-      container.appendChild(div);
-    });
-  }
 
-  searchForm.addEventListener("submit", async e => {
-    e.preventDefault();
-    const query = searchInput.value.trim();
-    if (!query) {
-      resultsContainer.innerHTML = '<div class="empty-state">Enter a movie title.</div>';
-      return;
-    }
-    const movies = await searchMovies(query);
-    displayMovies(movies, resultsContainer);
-  });
+// THEME TOGGLE
+toggle.addEventListener("click", () => {
+document.body.classList.toggle("light");
 
-  navLinks.forEach(link => {
-    link.addEventListener("click", async e => {
-      e.preventDefault();
-      navLinks.forEach(l => l.classList.remove("active"));
-      link.classList.add("active");
-
-      resultsContainer.innerHTML = '<div class="empty-state">Loading...</div>';
-      let movies = [];
-      switch(link.dataset.section) {
-        case "popular":
-          movies = await getPopularMovies();
-          break;
-        case "top-rated":
-          movies = await fetch(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}`).then(r => r.json()).then(d => d.results);
-          break;
-        case "now-playing":
-          movies = await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}`).then(r => r.json()).then(d => d.results);
-          break;
-        default:
-          movies = await getPopularMovies();
-      }
-      displayMovies(movies, resultsContainer);
-    });
-  });
-
-  themeToggle.addEventListener("click", () => {
-    document.documentElement.classList.toggle("light-theme");
-  });
+if(document.body.classList.contains("light")){
+icon.innerHTML = `
+<circle cx="12" cy="12" r="5" fill="currentColor"/>
+<g stroke="currentColor" stroke-width="2">
+<line x1="12" y1="1" x2="12" y2="3"/>
+<line x1="12" y1="21" x2="12" y2="23"/>
+<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+<line x1="1" y1="12" x2="3" y2="12"/>
+<line x1="21" y1="12" x2="23" y2="12"/>
+</g>
+`;
+}else{
+icon.innerHTML = `
+<path d="M21 12.79A9 9 0 1111.21 3 
+7 7 0 0021 12.79z" fill="currentColor"/>
+`;
+}
 });
+
+// DISPLAY MOVIES
+function display(movies){
+moviesEl.innerHTML="";
+
+movies.forEach(movie=>{
+
+const div=document.createElement("div");
+div.className="movie";
+
+div.innerHTML=`
+<img src="${IMG+movie.poster_path}">
+
+<div class="watchlist">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+<path d="M6 2a2 2 0 00-2 2v18l8-4 8 4V4a2 2 0 00-2-2H6z"/>
+</svg>
+</div>
+
+<div class="movie-info">
+<h3>${movie.title}</h3>
+<p class="date">${movie.release_date || "N/A"}</p>
+<p>⭐ ${movie.vote_average}</p>
+</div>
+`;
+
+// WATCHLIST BUTTON
+const watchBtn = div.querySelector(".watchlist");
+
+watchBtn.addEventListener("click", (e)=>{
+e.stopPropagation();
+
+watchBtn.classList.toggle("active");
+
+const exists = watchlist.find(m=>m.id===movie.id);
+
+if(exists){
+watchlist = watchlist.filter(m=>m.id!==movie.id);
+}else{
+watchlist.push(movie);
+}
+
+localStorage.setItem("watchlist", JSON.stringify(watchlist));
+});
+
+
+// OPEN MODAL
+div.onclick=()=>openModal(movie);
+
+moviesEl.appendChild(div);
+
+});
+}
+
+// MODAL
+function openModal(movie){
+modal.classList.add("active");
+
+modalBody.innerHTML=`
+<h2>${movie.title}</h2>
+
+<img src="${IMG+movie.poster_path}" width="200">
+
+<p><strong>Release:</strong> ${movie.release_date}</p>
+
+<p><strong>Language:</strong> ${movie.original_language}</p>
+
+<p>${movie.overview}</p>
+`;
+}
+
+// CLOSE MODAL
+document.getElementById("closeModal").onclick=()=>{
+modal.classList.remove("active");
+};
+
+// CLICK OUTSIDE CLOSE
+modal.addEventListener("click",(e)=>{
+if(e.target===modal){
+modal.classList.remove("active");
+}
+});
+
+// SEARCH
+document.getElementById("searchForm").onsubmit=async(e)=>{
+e.preventDefault();
+
+const q=document.getElementById("searchInput").value;
+
+const movies=await searchMovies(q);
+
+display(movies);
+};
+
+// NAVIGATION
+document.querySelectorAll(".nav-link").forEach(link=>{
+link.onclick=async()=>{
+
+document.querySelectorAll(".nav-link")
+.forEach(l=>l.classList.remove("active"));
+
+link.classList.add("active");
+
+let movies=[];
+
+if(link.dataset.section==="home"){
+movies=await getPopular();
+}
+
+if(link.dataset.section==="popular"){
+movies=await getPopular();
+}
+
+if(link.dataset.section==="top"){
+movies=await getTopRated();
+}
+
+if(link.dataset.section==="now"){
+movies=await getNowPlaying();
+}
+
+if(link.dataset.section==="watchlist"){
+display(watchlist);
+return;
+}
+
+display(movies);
+};
+});
+
+// LOAD DEFAULT
+getPopular().then(display);

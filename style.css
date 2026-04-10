@@ -496,3 +496,47 @@ justify-content:center;
 }
 
 }
+
+#themeIcon {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.light #themeIcon {
+  transform: rotate(180deg);
+  opacity: 0.8;
+}
+body.light {
+  background: linear-gradient(180deg, #f5f5f5, #eaeaea);
+}
+body.light .movie {
+  box-shadow: 0 6px 20px rgba(15, 15, 15, 0.1);
+}
+.theme-btn:active {
+  box-shadow: 0 0 12px rgba(73, 221, 251, 0.6);
+}
+body.light {
+  letter-spacing: 0.3px;
+}
+
+body.light {
+  background: linear-gradient(180deg, #f5f5f5, #eaeaea);
+}
+body.light {
+  background: url('light-pattern.png');
+  background-size: cover;
+}
+ body.light {
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+} 
+ body.light {
+  background: rgba(245,245,245,0.85);
+} 
+body.light {
+  background: linear-gradient(120deg, #fdfbfb, #ebedee);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+} 
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

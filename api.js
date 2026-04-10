@@ -25,3 +25,20 @@ const res=await fetch(`${BASE}/movie/now_playing?api_key=${API_KEY}`)
 const data=await res.json()
 return data.results
 }
+
+async function getTrending(){
+try{
+const res = await fetch(`${BASE}/trending/movie/week?api_key=${API_KEY}`);
+
+if(!res.ok){
+throw new Error("API failed: " + res.status);
+}
+
+const data = await res.json();
+return data.results;
+
+}catch(err){
+console.log("Trending error:", err);
+return [];
+}
+}

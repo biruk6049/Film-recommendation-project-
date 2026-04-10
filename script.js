@@ -1,10 +1,11 @@
-let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-
 const moviesEl = document.getElementById("movies");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modalBody");
 const toggle = document.getElementById("themeToggle");
 const icon = document.getElementById("themeIcon");
+
+let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+let currentMovies = [];
 
 
 // THEME TOGGLE
@@ -33,20 +34,27 @@ icon.innerHTML = `
 
 // DISPLAY MOVIES
 function display(movies){
-moviesEl.innerHTML="";
+currentMovies = movies;
+moviesEl.innerHTML = "";
 
 movies.forEach(movie=>{
 
 const div=document.createElement("div");
 div.className="movie";
 
+const isSaved = watchlist.some(m => m.id === movie.id);
+
 div.innerHTML=`
+<div class="poster-wrapper">
+
 <img src="${IMG+movie.poster_path}">
 
-<div class="watchlist">
+<div class="watchlist ${isSaved ? 'active' : ''}">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 <path d="M6 2a2 2 0 00-2 2v18l8-4 8 4V4a2 2 0 00-2-2H6z"/>
 </svg>
+</div>
+
 </div>
 
 <div class="movie-info">
@@ -57,23 +65,25 @@ div.innerHTML=`
 `;
 
 // WATCHLIST BUTTON
+
 const watchBtn = div.querySelector(".watchlist");
 
-watchBtn.addEventListener("click", (e)=>{
+watchBtn.onclick = (e) => {
 e.stopPropagation();
 
-watchBtn.classList.toggle("active");
+const exists = watchlist.find(m => m.id === movie.id);
 
-const exists = watchlist.find(m=>m.id===movie.id);
-
-if(exists){
-watchlist = watchlist.filter(m=>m.id!==movie.id);
-}else{
+if (exists) {
+watchlist = watchlist.filter(m => m.id !== movie.id);
+} else {
 watchlist.push(movie);
 }
 
 localStorage.setItem("watchlist", JSON.stringify(watchlist));
-});
+
+// refresh UI immediately
+display(currentMovies);
+};
 
 
 // OPEN MODAL
@@ -129,36 +139,38 @@ document.querySelectorAll(".nav-link").forEach(link=>{
 link.onclick=async()=>{
 
 document.querySelectorAll(".nav-link")
-.forEach(l=>l.classList.remove("active"));
+.forEach(l=>l.classList.remove("active"))
 
-link.classList.add("active");
+link.classList.add("active")
 
-let movies=[];
+let movies = []
 
-if(link.dataset.section==="home"){
-movies=await getPopular();
+const section = link.dataset.section
+
+if(section === "home"){
+movies = await getTrending()
 }
 
-if(link.dataset.section==="popular"){
-movies=await getPopular();
+else if(section === "popular"){
+movies = await getPopular()
 }
 
-if(link.dataset.section==="top"){
-movies=await getTopRated();
+else if(section === "top"){
+movies = await getTopRated()
 }
 
-if(link.dataset.section==="now"){
-movies=await getNowPlaying();
+else if(section === "now"){
+movies = await getNowPlaying()
 }
 
-if(link.dataset.section==="watchlist"){
+if(section === "watchlist"){
 display(watchlist);
 return;
 }
 
-display(movies);
-};
-});
+display(movies)
+}
+})
 
 // LOAD DEFAULT
-getPopular().then(display);
+getTrending().then(display)
